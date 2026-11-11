@@ -61,10 +61,6 @@ for current_J in J_values:
     plt.grid(axis='x', alpha=0.2)
     plt.scatter(spike_times, [current_J] * len(spike_times))
     
-
-
-    
-'''
 ##visualizzazione grafici
 
 
@@ -90,5 +86,5 @@ plt.title('LIF - Reset visualization')
 
 plt.figure(4)
 plt.stem(time_steps,spikes)
-'''
+
 plt.show()
