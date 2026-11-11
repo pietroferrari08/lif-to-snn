@@ -501,3 +501,75 @@ Possible future extensions include ten-class MNIST classification, alternative t
 ---
 
 **Conclusion:** This project demonstrates how a simple LIF neuron can be extended into a trainable spiking network. It also illustrates why neuronal dynamics and synaptic learning must be considered together when interpreting the behavior of SNNs.
+
+## Extension — Full MNIST Classification (10 Classes)
+
+After completing the binary classification task, the SNN was extended to recognize all ten handwritten digits from the MNIST dataset.
+
+### Architecture
+
+The original fully connected LIF architecture was retained, with a larger hidden layer and ten output neurons:
+
+**784 input spike streams → 128 hidden LIF neurons → 10 output LIF neurons**
+
+The model contains 101,632 trainable synaptic weights.
+
+Training configuration:
+
+| Parameter | Value |
+|---|---:|
+| Training images | 60,000 |
+| Test images | 10,000 |
+| Simulation steps | 30 |
+| Hidden neurons | 128 |
+| Output neurons | 10 |
+| Beta | 0.8 |
+| Threshold | 1.0 |
+| Batch size | 64 |
+| Epochs | 3 |
+| Optimizer | Adam |
+| Learning rate | 0.001 |
+
+The model uses probabilistic rate coding, surrogate gradients and cross-entropy loss on output spike counts.
+
+### Results
+
+| Epoch | Training loss | Training accuracy |
+|---|---:|---:|
+| 1 | 0.2816 | 89.84% |
+| 2 | 0.1316 | 94.88% |
+| 3 | 0.0961 | 96.19% |
+
+Performance on the official 10,000-image test partition:
+
+| Metric | Result |
+|---|---:|
+| Test accuracy | **95.59%** |
+| Correct classifications | 9,559 |
+| Incorrect classifications | 245 |
+| Ties | 196 (1.96%) |
+| Mean output firing rate | 16.32% |
+
+Ties between output neurons with the highest spike counts were treated as unsuccessful classifications.
+
+### Error analysis
+
+The most difficult class was digit **4**, with 879 correct predictions out of 982 examples.
+
+The most frequent specific misclassification involved digit 4 being predicted as digit 9 (42 cases). There were also 46 ties among images of digit 4.
+
+These observations identify potential areas for further investigation, but do not establish the visual causes of the errors.
+
+![MNIST 10-class confusion matrix](figures/mnist10_confusion.png)
+
+### Conclusion
+
+The same basic SNN design successfully scales from binary digit classification to the complete ten-class MNIST problem.
+
+The resulting accuracy is lower than in the binary experiment, but the classification tasks are not directly equivalent.
+
+The extension demonstrates the flexibility of the original architecture without introducing convolutional layers or additional training mechanisms.
+
+**Implementation:** `12_mnist_10_classes.py`
+
+The extension is complete and forms the final experiment of this repository.
